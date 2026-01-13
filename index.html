@@ -23,15 +23,15 @@
 body{
   background:linear-gradient(135deg,#020617,#0f172a);
   color:#e5e7eb;
-  overflow:hidden; /* dikunci saat loading */
+  overflow:hidden;
 }
 
-/* === LOADING SCREEN (TANPA HTML) === */
+/* ===== LOADING SCREEN ===== */
 body::before{
   content:"Loading Portfolio…";
   position:fixed;
   inset:0;
-  background:linear-gradient(135deg,#020617,#020617);
+  background:#020617;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -150,7 +150,7 @@ header p{
   background:rgba(255,255,255,.06);
   padding:25px;
   border-radius:22px;
-  transition:.7s;
+  transition:.7s ease;
   box-shadow:0 12px 35px rgba(0,0,0,.4);
   opacity:0;
   transform:scale(.9);
@@ -188,7 +188,7 @@ footer{
 
 <body>
 
-<audio id="bgMusic" loop preload="auto">
+<audio id="bgMusic" loop preload="metadata">
   <source src="videoplayback.weba" type="audio/webm">
 </audio>
 
@@ -202,15 +202,15 @@ footer{
 <div class="container">
   <div class="section">
     <h2>👋 Tentang Saya</h2>
-    <p>Saya membantu membuat website sederhana.</p>
+    <p>Saya membantu membuat website sederhana untuk pelajar, pondok, dan UMKM.</p>
   </div>
 </div>
 
 <footer>© 2026 • Jasa Website Sederhana</footer>
 
 <script>
-/* === LOADING CONTROL === */
-window.addEventListener("load",()=>{
+/* === LOADING (ANTI STUCK) === */
+document.addEventListener("DOMContentLoaded",()=>{
   setTimeout(()=>{
     document.body.classList.add("loaded");
     document.body.style.overflow="auto";
@@ -220,26 +220,32 @@ window.addEventListener("load",()=>{
 /* === MUSIC === */
 const music = document.getElementById("bgMusic");
 const btn = document.getElementById("musicBtn");
-let isPlaying=false;
-music.volume=0.12;
+let isPlaying = false;
+music.volume = 0.12;
 
 function toggleMusic(){
   if(isPlaying){
-    music.pause(); btn.textContent="🔇";
+    music.pause();
+    btn.textContent = "🔇";
   }else{
-    music.play(); btn.textContent="🎵";
+    music.play();
+    btn.textContent = "🎵";
   }
-  isPlaying=!isPlaying;
+  isPlaying = !isPlaying;
 }
 
 /* === SCROLL ANIMATION === */
-const obs=new IntersectionObserver(e=>{
-  e.forEach(i=>{
-    if(i.isIntersecting) i.target.classList.add("show");
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
   });
-},{threshold:.2});
+},{threshold:0.2});
 
-document.querySelectorAll(".section,.card").forEach(el=>obs.observe(el));
+document.querySelectorAll(".section, .card").forEach(el=>{
+  observer.observe(el);
+});
 </script>
 
 </body>
