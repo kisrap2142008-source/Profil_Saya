@@ -78,6 +78,16 @@ header p{
 /* SECTION */
 .section{
   margin-bottom:60px;
+
+  /* ANIMASI AWAL */
+  opacity:0;
+  transform:translateY(40px);
+  transition:all .9s ease;
+}
+
+.section.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
 .section h2{
@@ -112,8 +122,17 @@ header p{
   background:rgba(255,255,255,.06);
   padding:25px;
   border-radius:22px;
-  transition:.4s;
+  transition:all .7s ease;
   box-shadow:0 12px 35px rgba(0,0,0,.4);
+
+  /* ANIMASI AWAL */
+  opacity:0;
+  transform:scale(.9);
+}
+
+.card.show{
+  opacity:1;
+  transform:scale(1);
 }
 
 .card:hover{
@@ -161,7 +180,6 @@ footer{
 
 <body>
 
-<!-- AUDIO -->
 <audio id="bgMusic" loop preload="auto">
   <source src="videoplayback.weba" type="audio/webm">
 </audio>
@@ -177,10 +195,7 @@ footer{
 
   <div class="section">
     <h2>👋 Tentang Saya</h2>
-    <p>
-      Saya membantu membuat website sederhana untuk pelajar, pondok, dan UMKM.
-      Fokus pada tampilan bersih, mudah digunakan, dan cepat.
-    </p>
+    <p>Saya membantu membuat website sederhana untuk pelajar, pondok, dan UMKM.</p>
   </div>
 
   <div class="section">
@@ -189,17 +204,17 @@ footer{
       <div class="card">
         <span class="badge">Website</span>
         <h3>Web Profil</h3>
-        <p>Menampilkan informasi pribadi, organisasi, atau usaha.</p>
+        <p>Menampilkan informasi pribadi.</p>
       </div>
       <div class="card">
-        <span class="badge">Landing Page</span>
+        <span class="badge">Landing</span>
         <h3>Web Pengumuman</h3>
-        <p>Cocok untuk kegiatan, acara, dan informasi penting.</p>
+        <p>Cocok untuk acara.</p>
       </div>
       <div class="card">
         <span class="badge">Form</span>
         <h3>Form Online</h3>
-        <p>Pendaftaran, laporan, atau pengumpulan data sederhana.</p>
+        <p>Pendaftaran data.</p>
       </div>
     </div>
   </div>
@@ -209,30 +224,20 @@ footer{
     <div class="cards">
       <div class="card">HTML & CSS</div>
       <div class="card">PHP Dasar</div>
-      <div class="card">Desain Responsif</div>
+      <div class="card">Responsif</div>
     </div>
-  </div>
-
-  <div class="section">
-    <h2>📞 Kontak</h2>
-    <p>Siap membantu kebutuhan website sederhana.</p>
-    <a class="button" href="https://wa.me/6281553468291" target="_blank">
-      Chat via WhatsApp
-    </a>
   </div>
 
 </div>
 
-<footer>
-  © 2026 • Jasa Website Sederhana
-</footer>
+<footer>© 2026 • Jasa Website Sederhana</footer>
 
 <script>
+/* === MUSIC === */
 const music = document.getElementById("bgMusic");
 const btn = document.getElementById("musicBtn");
 let isPlaying = false;
-
-music.volume = 0.12; // lembut & profesional
+music.volume = 0.12;
 
 function toggleMusic(){
   if(isPlaying){
@@ -244,6 +249,19 @@ function toggleMusic(){
   }
   isPlaying = !isPlaying;
 }
+
+/* === SCROLL ANIMATION === */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+},{ threshold:0.2 });
+
+document.querySelectorAll(".section, .card").forEach(el => {
+  observer.observe(el);
+});
 </script>
 
 </body>
