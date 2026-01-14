@@ -171,7 +171,6 @@ footer{
 </head>
 <body>
 
-<!-- AUDIO -->
 <audio id="bgMusic" loop preload="auto">
   <source src="videoplayback.weba" type="audio/webm">
 </audio>
@@ -184,7 +183,6 @@ footer{
 </header>
 
 <div class="container">
-  <!-- Tentang Saya -->
   <div class="section">
     <h2>👋 Tentang Saya</h2>
     <p>
@@ -193,7 +191,6 @@ footer{
     </p>
   </div>
 
-  <!-- Layanan -->
   <div class="section">
     <h2>💼 Layanan</h2>
     <div class="cards">
@@ -215,7 +212,6 @@ footer{
     </div>
   </div>
 
-  <!-- Portfolio -->
   <div class="section">
     <h2>🖼️ Portfolio</h2>
     <div class="cards">
@@ -234,7 +230,6 @@ footer{
     </div>
   </div>
 
-  <!-- Testimoni -->
   <div class="section">
     <h2>🌟 Testimoni</h2>
     <div class="cards">
@@ -249,7 +244,6 @@ footer{
     </div>
   </div>
 
-  <!-- Paket Layanan -->
   <div class="section">
     <h2>💰 Paket Layanan</h2>
     <div class="cards">
@@ -264,7 +258,6 @@ footer{
     </div>
   </div>
 
-  <!-- Tips / Blog -->
   <div class="section">
     <h2>📚 Tips & Blog</h2>
     <div class="cards">
@@ -279,7 +272,6 @@ footer{
     </div>
   </div>
 
-  <!-- FAQ -->
   <div class="section">
     <h2>❓ FAQ</h2>
     <div class="faq-item">
@@ -296,7 +288,6 @@ footer{
     </div>
   </div>
 
-  <!-- Kontak -->
   <div class="section">
     <h2>📞 Kontak</h2>
     <p>Siap membantu kebutuhan website sederhana.</p>
@@ -336,11 +327,26 @@ faqItems.forEach(item=>{
   });
 });
 
-// TYPING EFFECT
+// TYPING EFFECT DENGAN AUTO SHOW ELEMENT
 function typeEffect(element, speed=25){
-  const text = element.dataset.text; // ambil dari data-text
+  const text = element.dataset.text;
   element.textContent = "";
+  
+  // LOGIKA BARU: Munculkan parent card/section perlahan sebelum mengetik
+  const parentCard = element.closest('.card');
+  const parentSection = element.closest('.section');
+  
+  if(parentCard) {
+    parentCard.style.opacity = "1";
+    parentCard.style.transform = "translateY(0)";
+  }
+  if(parentSection) {
+    parentSection.style.opacity = "1";
+  }
+  
+  element.style.opacity = "1";
   element.classList.add('typing-cursor');
+  
   let i = 0;
   const timer = setInterval(()=>{
     element.textContent += text.charAt(i);
@@ -356,17 +362,27 @@ function typeEffect(element, speed=25){
 window.addEventListener('DOMContentLoaded', ()=>{
   const elements = document.querySelectorAll('header h1, header p, .section h2, .section p, .card h3, .card p');
 
-  // simpan teks asli ke data-text dan kosongkan elemen
+  // Sembunyikan semua card dan section di awal melalui JS
+  document.querySelectorAll('.card, .section, header h1, header p').forEach(el => {
+    el.style.opacity = "0";
+    el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    if(el.classList.contains('card')) el.style.transform = "translateY(20px)";
+  });
+
+  // Simpan teks asli dan kosongkan
   elements.forEach(el => {
-    el.dataset.text = el.textContent;
+    el.dataset.text = el.textContent.trim();
     el.textContent = "";
   });
 
-  // tampilkan perlahan-lahan
-  let delay = 0;
+  // Jalankan typing secara berurutan (staggered)
+  let delay = 300; // jeda awal 0.3 detik
   elements.forEach(el => {
-    setTimeout(()=>{ typeEffect(el, 25); }, delay);
-    delay += el.dataset.text.length * 25 + 200;
+    setTimeout(()=>{ 
+      typeEffect(el, 20); 
+    }, delay);
+    // Tambahkan delay berdasarkan panjang teks + jeda antar elemen
+    delay += el.dataset.text.length * 20 + 150;
   });
 });
 </script>
