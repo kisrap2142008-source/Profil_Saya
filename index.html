@@ -157,6 +157,16 @@ footer{
   color:#9ca3af;
   font-size:14px;
 }
+
+/* OPTIONAL CURSOR */
+.typing-cursor::after{
+  content: '|';
+  animation: blink 0.7s infinite;
+}
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
 </style>
 </head>
 <body>
@@ -305,8 +315,7 @@ const music = document.getElementById("bgMusic");
 const btn = document.getElementById("musicBtn");
 let isPlaying = false;
 
-music.volume = 0.20; // lembut & profesional
-
+music.volume = 0.20;
 function toggleMusic(){
   if(isPlaying){
     music.pause();
@@ -327,25 +336,37 @@ faqItems.forEach(item=>{
   });
 });
 
-// EFFECT TYPING PER TEKS
-function typeEffect(element, speed=30){
-  const text = element.textContent;
+// TYPING EFFECT
+function typeEffect(element, speed=25){
+  const text = element.dataset.text; // ambil dari data-text
   element.textContent = "";
+  element.classList.add('typing-cursor');
   let i = 0;
   const timer = setInterval(()=>{
     element.textContent += text.charAt(i);
     i++;
-    if(i >= text.length) clearInterval(timer);
+    if(i >= text.length){
+      clearInterval(timer);
+      element.classList.remove('typing-cursor');
+    }
   }, speed);
 }
 
-// Terapkan efek typing ke header, semua h2, h3, dan p
+// Persiapkan semua teks
 window.addEventListener('DOMContentLoaded', ()=>{
   const elements = document.querySelectorAll('header h1, header p, .section h2, .section p, .card h3, .card p');
+
+  // simpan teks asli ke data-text dan kosongkan elemen
+  elements.forEach(el => {
+    el.dataset.text = el.textContent;
+    el.textContent = "";
+  });
+
+  // tampilkan perlahan-lahan
   let delay = 0;
-  elements.forEach(el=>{
+  elements.forEach(el => {
     setTimeout(()=>{ typeEffect(el, 25); }, delay);
-    delay += el.textContent.length * 25 + 200; // delay antar elemen
+    delay += el.dataset.text.length * 25 + 200;
   });
 });
 </script>
