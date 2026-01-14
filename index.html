@@ -324,7 +324,7 @@ const music = document.getElementById("bgMusic");
 const btn = document.getElementById("musicBtn");
 let isPlaying = false;
 
-music.volume = 0.17;
+music.volume = 0.18;
 
 function toggleMusic(){
   if(isPlaying){
@@ -344,64 +344,61 @@ document.querySelectorAll('.faq-item h4').forEach(item=>{
     p.style.display = p.style.display === 'block' ? 'none' : 'block';
   });
 });
+</script>
 
-/* ========= NAGA ANIMASI DI HEADER ========= */
+<!-- ===== TAMBAHAN JAVASCRIPT: NAGA DI HEADER ===== -->
+<script>
 (() => {
   const header = document.querySelector("header");
   if(!header) return;
 
-  header.style.position = "relative";
-  header.style.overflow = "hidden";
-
   const canvas = document.createElement("canvas");
   header.appendChild(canvas);
 
-  Object.assign(canvas.style,{
-    position:"absolute",
-    inset:0,
-    zIndex:0,
-    opacity:0.45,
-    pointerEvents:"none"
-  });
+  canvas.style.position = "absolute";
+  canvas.style.top = 0;
+  canvas.style.left = 0;
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
+  canvas.style.pointerEvents = "none";
+  canvas.style.opacity = "0.3";
+  canvas.style.zIndex = "0";
 
-  Array.from(header.children).forEach(el=>{
-    el.style.position = "relative";
-    el.style.zIndex = 2;
-  });
+  header.style.position = "relative";
 
   const ctx = canvas.getContext("2d");
-
-  function resize(){
-    canvas.width = header.offsetWidth;
-    canvas.height = header.offsetHeight;
-  }
-  resize();
-  window.addEventListener("resize", resize);
 
   let t = 0;
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle = "rgba(147,197,253,.9)";
-    ctx.lineWidth = 2.2;
-    ctx.shadowBlur = 35;
+    ctx.strokeStyle = "rgba(147,197,253,0.9)";
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 25;
     ctx.shadowColor = "#60a5fa";
 
     ctx.beginPath();
-    for(let i=0;i<220;i++){
-      const x = (i/219)*canvas.width;
-      const y = canvas.height/2
-        + Math.sin(i*0.3 + t)*35
-        + Math.sin(i*0.08 + t*0.7)*65;
+    for(let i=0;i<180;i++){
+      const x = (i/179)*canvas.width;
+      const y = canvas.height/2 +
+                Math.sin(i*0.3+t)*30 +
+                Math.sin(i*0.08+t*0.6)*55;
       ctx.lineTo(x,y);
     }
     ctx.stroke();
     t += 0.02;
     requestAnimationFrame(draw);
   }
+
+  function resize(){
+    canvas.width = header.clientWidth;
+    canvas.height = header.clientHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
   draw();
 })();
 </script>
 
 </body>
 </html>
-
